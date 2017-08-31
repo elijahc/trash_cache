@@ -1,4 +1,19 @@
+from pprint import pprint as pp
 from trash_cache import TrashCache
 
 tc = TrashCache()
-print(vars(tc))
+pp(vars(tc))
+
+exps = [
+        {
+            'id': 12345,
+            'vars': [
+                {
+                    'name':'corr_matrix',
+                    'data':[1,2,3,4,5]
+                    }
+                ]
+            }
+        ]
+
+tc.save_experiments(experiments=exps)

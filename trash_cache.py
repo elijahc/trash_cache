@@ -28,7 +28,7 @@ class TrashCache():
         manifest_vars = []
 
         if not os.path.exists(exp_fp):
-            os.mkdir(exp_fp)
+            os.mkdirs(exp_fp)
         for v in exp['vars']:
             vpath = os.path.join(exp_fp,v['name']+'.pk')
             print('saving...',vpath)

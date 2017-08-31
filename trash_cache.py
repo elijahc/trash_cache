@@ -22,14 +22,20 @@ class TrashCache():
     def _save_exp(self, exp):
         exp_fp = os.path.join(self.exps_fp,str(exp['id']))
         print('exp_fp: ',exp_fp)
+        manifest_vars = []
         for v in exp['vars']:
             vpath = os.path.join(exp_fp,v['name']+'.pk')
             print('saving...',vpath)
+            v['fp'] = vpath
 
             if isinstance(v['data'],pd.DataFrame):
                 v['data'].to_pickle(vpath)
             else:
                 pickle.dump(v['data'],open(vpath))
+        
+            manifest_vars.append({v['name']:vpath})
+
+        self.manifest[ str(exp['id']) ] = manifest_vars
         
     def save_experiments(self, experiments):
         self.exps_fp = os.path.join(self.base_path,'exps')

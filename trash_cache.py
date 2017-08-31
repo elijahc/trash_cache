@@ -3,7 +3,7 @@ import numpy as np
 import json
 import os
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 class TrashCache():
     def __init__(self, manifest_fp='./tpc/trash_cache_manifest.json'):
         self.manifest_fp = os.path.abspath(manifest_fp)

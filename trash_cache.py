@@ -34,11 +34,12 @@ class TrashCache():
             print('saving...',vpath)
 
             if isinstance(v['data'],pd.DataFrame):
-                v['data'].to_pickle(vpath)
                 vpath = vpath + '.df'
+                v['data'].to_pickle(vpath)
             else:
-                pickle.dump(v['data'],open(vpath,'w+'))
                 vpath = vpath + '.pk'
+                pickle.dump(v['data'],open(vpath,'w+'))
+            
             v['fp'] = vpath
 
             manifest_vars.append({v['name']:vpath})

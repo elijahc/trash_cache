@@ -6,7 +6,6 @@ import pandas as pd
 import numpy as np
 
 
-
 __version__ = '0.0.2'
 class TrashCache():
     def __init__(self, manifest_fp='./tpc/trash_cache_manifest.json'):
@@ -14,12 +13,12 @@ class TrashCache():
         self.base_path = os.path.dirname(self.manifest_fp)
         
         # mk cache path
-        if os.path.exists(self.base_path) is False:
+        if not os.path.exists(self.base_path):
             os.makedirs(self.base_path)
         
         # mk manifest_fp path
-        if os.path.isfile(self.manifest_fp) is False:
-            json.dump({},open(self.manifest_fp,'a'))
+        if not os.path.isfile(self.manifest_fp):
+            json.dump({},open(self.manifest_fp,'w+'))
 
         self.manifest = json.load(open(self.manifest_fp,'r'))
 
@@ -27,6 +26,9 @@ class TrashCache():
         exp_fp = os.path.join(self.exps_fp,str(exp['id']))
         print('exp_fp: ',exp_fp)
         manifest_vars = []
+
+        if not os.path.exists(exp_fp):
+            os.mkdir(exp_fp)
         for v in exp['vars']:
             vpath = os.path.join(exp_fp,v['name']+'.pk')
             print('saving...',vpath)
@@ -35,7 +37,7 @@ class TrashCache():
             if isinstance(v['data'],pd.DataFrame):
                 v['data'].to_pickle(vpath)
             else:
-                pickle.dump(v['data'],open(vpath))
+                pickle.dump(v['data'],open(vpath,'w+'))
         
             manifest_vars.append({v['name']:vpath})
 
@@ -47,6 +49,8 @@ class TrashCache():
             os.makedirs(self.exps_fp)
         for e in experiments:
             self._save_exp(e)
+        
+        json.dump(self.manifest,open(self.manifest_fp,'w+'))
 
     def load_experiments(self, exp_ids):
         

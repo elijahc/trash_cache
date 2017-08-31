@@ -23,7 +23,11 @@ class TrashCache():
         exp_fp = os.path.join(self.exps_fp,str(exp['id']))
         print('exp_fp: ',exp_fp)
         for v in exp['vars']:
-            print('saving...',v['name'])
+            vpath = os.path.join(exp_fp,v['name'])
+            print('saving...',vpath)
+            
+            if isinstance(v['data'],pd.DataFrame):
+                v['data'].to_pickle(vpath)
         
     def save_experiments(self, experiments):
         self.exps_fp = os.path.join(self.base_path,'exps')

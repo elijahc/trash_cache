@@ -30,15 +30,17 @@ class TrashCache():
         if not os.path.exists(exp_fp):
             os.makedirs(exp_fp)
         for v in exp['vars']:
-            vpath = os.path.join(exp_fp,v['name']+'.pk')
+            vpath = os.path.join(exp_fp,v['name'])
             print('saving...',vpath)
-            v['fp'] = vpath
 
             if isinstance(v['data'],pd.DataFrame):
                 v['data'].to_pickle(vpath)
+                vpath = vpath + '.df'
             else:
                 pickle.dump(v['data'],open(vpath,'w+'))
-        
+                vpath = vpath + '.pk'
+            v['fp'] = vpath
+
             manifest_vars.append({v['name']:vpath})
 
         self.manifest[ str(exp['id']) ] = manifest_vars
@@ -55,5 +57,5 @@ class TrashCache():
     def load_experiments(self, exp_ids):
         
         for exp_id in exp_ids:
-            exp_dict = self.manifest[exp_id]
+            load_vars(exp_id)
             # for k,v in exp_dict.iteritems()

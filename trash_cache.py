@@ -58,8 +58,26 @@ class TrashCache():
         
         json.dump(self.manifest,open(self.manifest_fp,'w+'))
 
+    def load_vars(self,exp_id):
+        values = {}
+        for v in self.manifest[ str(exp_id) ]:
+            name = v.keys()[0]
+            fp = v.values()[0]
+            extension = fp.split('.')[1]
+            
+            if extension is '.df':
+                print('loading dataframe...',fp)
+                values[name] = pd.read_pickle(fp)
+
+            elif extension is '.nda':
+                print('loading ndarray...',fp)
+                values[name] = np.load(fp)
+
+            else:
+                print('loading pickle...',fp)
+                values[name] = pickle.load(open(fp,'r'))
+
+        return values
+
     def load_experiments(self, exp_ids):
-        
-        for exp_id in exp_ids:
-            load_vars(exp_id)
-            # for k,v in exp_dict.iteritems()
+        return [self.load_vars(eid) for eid in exp_ids]

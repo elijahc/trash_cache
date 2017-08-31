@@ -36,6 +36,9 @@ class TrashCache():
             if isinstance(v['data'],pd.DataFrame):
                 vpath = vpath + '.df'
                 v['data'].to_pickle(vpath)
+            if isinstance(v['data'],np.ndarray)
+                vpath = vpath + '.nda'
+                v['data'].to_pickle(vpath)
             else:
                 vpath = vpath + '.pk'
                 pickle.dump(v['data'],open(vpath,'w+'))

@@ -1,7 +1,11 @@
-import pandas as pd
-import numpy as np
 import json
 import os
+import pickle
+
+import pandas as pd
+import numpy as np
+
+
 
 __version__ = '0.0.2'
 class TrashCache():
